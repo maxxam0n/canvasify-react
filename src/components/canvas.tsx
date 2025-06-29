@@ -1,4 +1,5 @@
 import {
+	CSSProperties,
 	PropsWithChildren,
 	useCallback,
 	useEffect,
@@ -188,19 +189,18 @@ export const Canvas = ({
 		[registerLayer, unregisterLayer]
 	)
 
-	const containerStyle = {
+	const containerStyle: CSSProperties = {
 		width: `${width}px`,
 		height: `${height}px`,
 		backgroundColor: bgColor,
+		position: 'relative',
 	}
 
 	return (
 		<MetricsProvider>
 			<LayerRegistryContext.Provider value={layerRegistryValue}>
 				<ShapeRegistryContext.Provider value={contextValue}>
-					<div className="relative" style={containerStyle}>
-						{children}
-					</div>
+					<div style={containerStyle}>{children}</div>
 				</ShapeRegistryContext.Provider>
 			</LayerRegistryContext.Provider>
 		</MetricsProvider>

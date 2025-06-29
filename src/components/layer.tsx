@@ -1,9 +1,9 @@
 import {
-	useMemo,
 	PropsWithChildren,
 	useCallback,
 	useContext,
 	useEffect,
+	CSSProperties,
 } from 'react'
 import { LayerRegistryContext } from '../contexts/layer-registry-context'
 import { LayerNameContext } from '../contexts/layer-name-context'
@@ -43,13 +43,16 @@ export const Layer = ({
 		return () => unregisterLayer(name)
 	}, [name, unregisterLayer])
 
+	const style: CSSProperties = {
+		zIndex,
+		position: 'absolute',
+		top: 0,
+		left: 0,
+	}
+
 	return (
 		<LayerNameContext.Provider value={name}>
-			<canvas
-				className="absolute top-0 left-0"
-				ref={refCallback}
-				style={useMemo(() => ({ zIndex }), [zIndex])}
-			/>
+			<canvas ref={refCallback} style={style} />
 			{children}
 		</LayerNameContext.Provider>
 	)
