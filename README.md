@@ -3,49 +3,48 @@
 [![NPM Version](https://img.shields.io/npm/v/@maxxam0n/canvasify-react.svg)](https://www.npmjs.com/package/@maxxam0n/canvasify-react)
 [![License](https://img.shields.io/npm/l/@maxxam0n/canvasify-react.svg)](https://github.com/maxxam0n/canvasify-react/blob/main/LICENSE)
 
-**Canvasify React** — это легковесная декларативная библиотека для 2D-рендеринга в React, использующая HTML Canvas. Описывайте сложную графику, анимации и сцены с помощью привычных React-компонентов, а Canvasify-React эффективно отрисует их на холсте.
+**Canvasify React** is a lightweight, declarative 2D rendering library for React, powered by the HTML Canvas. Describe complex graphics, animations, and scenes using familiar React components, and let Canvasify React efficiently render them on the canvas.
 
-Идеально подходит для создания простых игр, инфографики, кастомных визуализаций и интерактивных элементов.
+Perfect for building simple games, infographics, custom data visualizations, and interactive elements.
 
-## ✨ Ключевые особенности
+## ✨ Key Features
 
--  **Декларативный API:** Забудьте об императивных вызовах Canvas API. Описывайте вашу сцену так же, как вы описываете UI в React: `<Canvas><Layer><RectShape ... /></Layer></Canvas>`.
--  **Компонентная архитектура:** Вся графика — это компоненты. Создавайте сложные объекты, комбинируя простые фигуры.
--  **Система слоев:** Разделяйте статичный фон и динамический передний план с помощью `<Layer>` для оптимальной производительности. Каждый слой — это отдельный `<canvas>`.
--  **Вложенные трансформации:** Легко группируйте объекты с помощью `<Group>` и применяйте к ним трансформации (перемещение, масштабирование, вращение), которые наследуются дочерними элементами.
--  **Богатый набор фигур:** Включает в себя готовые компоненты для рендеринга прямоугольников, кругов, эллипсов, линий, полигонов, текста и изображений.
--  **Расширяемость:** Создавайте собственные кастомные фигуры с помощью хука `useShape` и полностью переопределяйте логику рендера слоя с помощью `renderer`.
--  **Легковесность:** Минимальное количество зависимостей и небольшой размер.
+-  **Declarative API:** Forget imperative Canvas API calls. Describe your scene just as you would describe your UI in React: `<Canvas><Layer><RectShape ... /></Layer></Canvas>`.
+-  **Component-Based:** All graphics are components. Build complex objects by composing simple shapes.
+-  **Layer System:** Separate static backgrounds from dynamic foregrounds using `<Layer>` for optimal performance. Each layer is a separate `<canvas>` element.
+-  **Nested Transformations:** Easily group objects with `<Group>` and apply transformations (translation, scaling, rotation) that are inherited by child elements.
+-  **Rich Shape Set:** Includes built-in components for rendering rectangles, circles, ellipses, lines, polygons, text, and images.
+-  **Extensible:** Create your own custom shapes of any complexity with the `useShape` hook and completely override a layer's rendering logic with the `renderer` prop.
+-  **Lightweight:** Minimal dependencies and a small bundle size.
 
-## 📚 Содержание
+## 📚 Table of Contents
 
--  [Ключевые особенности](#-ключевые-особенности)
--  [Установка](#-установка)
--  [Быстрый старт](#-быстрый-старт)
--  [Основные концепции](#-основные-концепции)
--  [Продвинутое использование](#-продвинутое-использование)
-   -  [Создание кастомных фигур с `useShape`](#создание-кастомных-фигур-с-useShape)
-   -  [Кастомная функция рендера для слоя](#кастомная-функция-рендера-для-слоя)
--  [API (Основные компоненты)](#-api-основные-компоненты)
--  [Справочник по типам (API Reference)](#справочник-по-типам-api-reference)
--  [Участие в разработке](#-участие-в-разработке)
--  [Лицензия](#-лицензия)
+-  [Key Features](#-key-features)
+-  [Installation](#-installation)
+-  [Quick Start](#-quick-start)
+-  [Core Concepts](#-core-concepts)
+-  [Advanced Usage](#️-advanced-usage)
+   -  [Creating Custom Shapes with `useShape`](#creating-custom-shapes-with-useshape)
+   -  [Custom Layer Renderer](#custom-layer-renderer)
+-  [API (Core Components)](#-api-core-components)
+-  [Contributing](#-contributing)
+-  [License](#-license)
 
-## 🚀 Установка
+## 🚀 Installation
 
 ```bash
 npm install @maxxam0n/canvasify-react
 ```
 
-или
+or via yarn:
 
 ```bash
 yarn add @maxxam0n/canvasify-react
 ```
 
-## 🎯 Быстрый старт
+## 🎯 Quick Start
 
-Вот простой пример, как нарисовать несколько фигур:
+Here’s a simple example of how to draw a few shapes:
 
 ```jsx
 import React from 'react'
@@ -61,7 +60,7 @@ function MyScene() {
 	return (
 		<Canvas width={800} height={600} bgColor="#f4f4f8">
 			<Layer name="background-shapes">
-				{/* Простой синий прямоугольник */}
+				{/* A simple blue rectangle */}
 				<RectShape
 					x={50}
 					y={50}
@@ -72,7 +71,7 @@ function MyScene() {
 			</Layer>
 
 			<Layer name="foreground-shapes">
-				{/* Круг с обводкой */}
+				{/* A circle with a stroke */}
 				<CircleShape
 					cx={300}
 					cy={100}
@@ -82,7 +81,7 @@ function MyScene() {
 					lineWidth={4}
 				/>
 
-				{/* Текстовая метка */}
+				{/* A text label */}
 				<TextShape
 					x={50}
 					y={200}
@@ -98,76 +97,102 @@ function MyScene() {
 export default MyScene
 ```
 
-## 📚 Основные концепции
+## 📚 Core Concepts
 
 ### `<Canvas>`
 
-Корневой компонент, который создает контейнер для всех слоев и управляет их размерами.
+The root component that creates a container for all layers and manages their dimensions.
 
 ### `<Layer>`
 
-Каждый `<Layer>` — это отдельный `<canvas>` элемент, расположенный абсолютно друг над другом. Это позволяет оптимизировать рендеринг: статичные фоновые элементы можно поместить на один слой, а динамические, часто меняющиеся объекты — на другой.
+Each `<Layer>` is a separate `<canvas>` element, positioned absolutely on top of each other. This allows for rendering optimizations: static background elements can be placed on one layer, while dynamic, frequently changing objects can be placed on another.
 
-### Фигуры (Shapes)
+### Shapes
 
-Библиотека предоставляет набор компонентов для рисования примитивов, таких как `<RectShape>`, `<CircleShape>`, `<ImageShape>` и другие. Они не рендерят DOM-элементы, а вместо этого регистрируют свои инструкции по отрисовке в родительском слое `<Layer>`.
+The library provides a set of components for drawing primitives, such as `<RectShape>`, `<CircleShape>`, `<ImageShape>`, and more. They do not render DOM elements; instead, they register their drawing instructions with their parent `<Layer>`.
 
-### Группировка и трансформации
+### Grouping and Transformations
 
-Используйте компонент `<Group>`, чтобы сгруппировать несколько фигур и применить к ним общие трансформации. Для более сложных трансформаций, таких как вращение и масштабирование, используйте `<TransformGroup>`.
+Use the `<Group>` component to group multiple shapes and apply common transformations to them. For more complex transformations like rotation and scaling, use `<TransformGroup>`.
 
-## 🛠️ Продвинутое использование
+## 🛠️ Advanced Usage
 
-### Создание кастомных фигур с `useShape`
+### Creating Custom Shapes with `useShape`
 
-Если вам нужна фигура, которой нет в стандартном наборе, вы можете легко создать свою собственную с помощью хука `useShape`. Этот хук позволяет зарегистрировать любую функцию отрисовки в движке рендеринга.
+If you need a shape that isn't included in the standard set, you can easily create your own with the `useShape` hook. This hook allows you to register any drawing function with the rendering engine.
 
 ```jsx
 import React, { useCallback, useMemo } from 'react'
 import { useShape, BoundingBox } from '@maxxam0n/canvasify-react'
 
-// 1. Создаем компонент для кастомной фигуры
-export const HeartShape = ({ x, y, size, ...shapeParams }) => {
-	// 2. Описываем, как рисовать фигуру, с помощью Canvas API
+// 1. Define props for our new shape
+interface HeartShapeProps {
+	x: number;
+	y: number;
+	size: number;
+	fillColor?: string;
+	zIndex?: number;
+}
+
+// 2. Create the component
+export const HeartShape = ({
+	x,
+	y,
+	size,
+	fillColor = 'red',
+	...shapeParams
+}: HeartShapeProps) => {
+	// 3. Describe how to draw the shape using the Canvas API
 	const draw = useCallback(
-		ctx => {
-			// ... логика рисования сердца ...
+		(ctx: CanvasRenderingContext2D) => {
 			ctx.beginPath()
 			ctx.moveTo(x, y + size / 4)
 			ctx.quadraticCurveTo(x, y, x + size / 4, y)
-			// ... и так далее
-			ctx.fillStyle = shapeParams.fillColor || 'red'
+			ctx.quadraticCurveTo(x + size / 2, y, x + size / 2, y + size / 4)
+			// ... more drawing logic
+			ctx.closePath()
+
+			ctx.fillStyle = fillColor
 			ctx.fill()
 		},
-		[x, y, size, shapeParams.fillColor]
+		[x, y, size, fillColor]
 	)
 
-	// 3. Вычисляем BoundingBox
-	const boundingBox = useMemo(
-		() => ({ x, y, width: size, height: size }),
-		[x, y, size]
-	)
+	// 4. Calculate the BoundingBox for optimizations
+	const boundingBox =
+		useMemo <
+		BoundingBox >
+		(() => ({
+			x,
+			y,
+			width: size,
+			height: size,
+		}),
+		[x, y, size])
 
-	// 4. Регистрируем фигуру в движке
+	// 5. Register the shape with the engine using the useShape hook
 	useShape(draw, { ...shapeParams, box: boundingBox })
 
+	// The component renders nothing to the DOM
 	return null
 }
+
+// Now you can use <HeartShape> inside a <Layer> just like any other shape!
 ```
 
-### Кастомная функция рендера для слоя
+### Custom Layer Renderer
 
-Для полного контроля над процессом отрисовки слоя, вы можете передать в `<Layer>` проп `renderer`. Это функция, которая будет вызываться на каждом кадре анимации вместо стандартного рендерера библиотеки. Это полезно для сложных оптимизаций (например, собственный алгоритм "грязных областей") или для применения эффектов ко всему слою.
+For full control over a layer's rendering process, you can pass a `renderer` prop to `<Layer>`. This function will be called on every animation frame instead of the library's default renderer. This is useful for complex optimizations (like a custom dirty-region algorithm) or for applying effects to the entire layer.
 
-Функция `renderer` получает объект со следующими свойствами:
+The `renderer` function receives an object with the following properties:
 
--  `ctx`: Контекст `CanvasRenderingContext2D` данного слоя.
--  `shapes`: `Map` всех фигур, зарегистрированных на этом слое.
--  `dirtyAreas`: Массив "грязных областей", которые, по мнению движка, требуют перерисовки.
--  `opacity`: Общая прозрачность слоя.
--  `drawShapes`: **Важная утилита!** Это стандартная функция отрисовки фигур из библиотеки. Вы можете вызвать её, чтобы нарисовать все фигуры после выполнения своих кастомных операций.
+-  `ctx`: The `CanvasRenderingContext2D` of the current layer.
+-  `shapes`: A `Map` of all shapes registered on this layer.
+-  `dirtyAreas`: An array of "dirty regions" that the engine suggests need redrawing.
+-  `opacity`: The overall opacity of the layer.
+-  `drawShapes`: **A crucial utility!** This is the library's standard shape-drawing function. You can call it to render all shapes after performing your custom operations.
 
-**Пример: отрисовка сетки на фоне перед всеми фигурами.**
+**Example: Drawing a grid background before rendering any shapes.**
 
 ```jsx
 import {
@@ -177,14 +202,14 @@ import {
 	LayerRenderer,
 } from '@maxxam0n/canvasify-react'
 
-// Определяем нашу кастомную функцию рендера
+// Define our custom renderer function
 const gridRenderer: LayerRenderer = ({ ctx, shapes, opacity, drawShapes }) => {
 	const { width, height } = ctx.canvas
 
-	// 1. Полностью очищаем холст
+	// 1. Completely clear the canvas
 	ctx.clearRect(0, 0, width, height)
 
-	// 2. Рисуем кастомный фон (сетку)
+	// 2. Draw our custom background (a grid)
 	ctx.strokeStyle = '#e0e0e0'
 	ctx.lineWidth = 1
 	for (let x = 0; x < width; x += 20) {
@@ -200,7 +225,7 @@ const gridRenderer: LayerRenderer = ({ ctx, shapes, opacity, drawShapes }) => {
 		ctx.stroke()
 	}
 
-	// 3. Вызываем стандартный рендерер, чтобы он нарисовал все фигуры поверх нашей сетки
+	// 3. Call the default renderer to draw all shapes on top of our grid
 	drawShapes(ctx, shapes, opacity)
 }
 
@@ -221,262 +246,45 @@ function CustomRenderScene() {
 }
 ```
 
-## 📖 API (Основные компоненты)
+## 📖 API (Core Components)
 
 ### `<Canvas>`
 
-| Prop      | Type     | Default   | Описание                  |
-| :-------- | :------- | :-------- | :------------------------ |
-| `width`   | `number` | `500`     | Ширина холста в пикселях. |
-| `height`  | `number` | `300`     | Высота холста в пикселях. |
-| `bgColor` | `string` | `"white"` | Цвет фона контейнера.     |
+| Prop      | Type     | Default   | Description                                |
+| :-------- | :------- | :-------- | :----------------------------------------- |
+| `width`   | `number` | `500`     | The width of the canvas in pixels.         |
+| `height`  | `number` | `300`     | The height of the canvas in pixels.        |
+| `bgColor` | `string` | `"white"` | The background color of the container div. |
 
 ### `<Layer>`
 
-| Prop       | Type            | Default      | Описание                                                     |
-| :--------- | :-------------- | :----------- | :----------------------------------------------------------- |
-| `name`     | `string`        | **required** | Уникальное имя слоя.                                         |
-| `opacity`  | `number`        | `1`          | Прозрачность всего слоя (от 0 до 1).                         |
-| `zIndex`   | `number`        | `0`          | CSS `z-index` для `<canvas>` элемента.                       |
-| `renderer` | `LayerRenderer` | `undefined`  | Кастомная функция для полного контроля над рендерингом слоя. |
+| Prop       | Type            | Default      | Description                                                    |
+| :--------- | :-------------- | :----------- | :------------------------------------------------------------- |
+| `name`     | `string`        | **required** | A unique name for the layer.                                   |
+| `opacity`  | `number`        | `1`          | The overall opacity of the layer (from 0 to 1).                |
+| `zIndex`   | `number`        | `0`          | The CSS `z-index` for the `<canvas>` element.                  |
+| `renderer` | `LayerRenderer` | `undefined`  | A custom function for full control over the layer's rendering. |
 
 ### `<RectShape>`
 
-| Prop          | Type     | Default      | Описание                                          |
-| :------------ | :------- | :----------- | :------------------------------------------------ |
-| `x`           | `number` | `0`          | Координата X верхнего левого угла.                |
-| `y`           | `number` | `0`          | Координата Y верхнего левого угла.                |
-| `width`       | `number` | **required** | Ширина прямоугольника.                            |
-| `height`      | `number` | **required** | Высота прямоугольника.                            |
-| `fillColor`   | `string` | `undefined`  | Цвет заливки (например, `"red"` или `"#FF0000"`). |
-| `strokeColor` | `string` | `undefined`  | Цвет обводки.                                     |
-| `lineWidth`   | `number` | `1`          | Толщина линии обводки.                            |
-| `opacity`     | `number` | `1`          | Индивидуальная прозрачность фигуры.               |
-| `zIndex`      | `number` | `0`          | Порядок отрисовки внутри слоя.                    |
-
-## Справочник по типам (API Reference)
-
-В этом разделе описаны основные типы данных, используемые в ядре библиотеки **Canvasify React**.
-
-### 1. Основные типы для рендеринга и геометрии
-
-Это базовые "строительные блоки", описывающие геометрию и функции отрисовки.
-
-#### `BoundingBox`
-
-Описывает прямоугольную область (осе-ориентированный ограничивающий прямоугольник). Используется для определения границ фигуры для оптимизаций (например, обнаружения "грязных областей") и обработки событий.
-
-```typescript
-export type BoundingBox = {
-	x: number
-	y: number
-	width: number
-	height: number
-}
-```
-
-| Свойство | Тип      | Описание                           |
-| :------- | :------- | :--------------------------------- |
-| `x`      | `number` | Координата X верхнего левого угла. |
-| `y`      | `number` | Координата Y верхнего левого угла. |
-| `width`  | `number` | Ширина прямоугольника.             |
-| `height` | `number` | Высота прямоугольника.             |
-
----
-
-#### `ShapeRenderer`
-
-Функция, которая содержит непосредственные вызовы Canvas 2D API для отрисовки конкретной фигуры.
-
-```typescript
-export type ShapeRenderer = (ctx: CanvasRenderingContext2D) => void
-```
-
--  **`ctx`**: Контекст `CanvasRenderingContext2D` того слоя, на котором должна быть нарисована фигура.
-
----
-
-#### `PrepareTransform`
-
-Функция, ответственная за применение трансформаций (перемещение, масштабирование, вращение) к контексту холста _перед_ отрисовкой фигуры.
-
-```typescript
-export type PrepareTransform = (ctx: CanvasRenderingContext2D) => void
-```
-
--  **`ctx`**: Контекст, к которому будут применены `ctx.translate()`, `ctx.scale()` и т.д.
-
----
-
-### 2. Структуры данных для фигур
-
-Эти типы описывают, как отдельная фигура хранится и управляется внутри движка.
-
-#### `ShapeParams`
-
-Содержит метаданные фигуры, которые используются движком для управления рендерингом.
-
-```typescript
-export type ShapeParams = {
-	zIndex: number
-	opacity: number
-	box: BoundingBox
-}
-```
-
-| Свойство  | Тип           | Описание                                                                                         |
-| :-------- | :------------ | :----------------------------------------------------------------------------------------------- |
-| `zIndex`  | `number`      | Порядок отрисовки фигуры внутри слоя. Фигуры с большим `zIndex` рисуются поверх фигур с меньшим. |
-| `opacity` | `number`      | Прозрачность фигуры (от 0 до 1).                                                                 |
-| `box`     | `BoundingBox` | Ограничивающий прямоугольник фигуры.                                                             |
-
----
-
-#### `ShapeDrawingData`
-
-Основная структура данных, представляющая одну отрисовываемую сущность (фигуру) в движке.
-
-```typescript
-export type ShapeDrawingData = {
-	draw: ShapeRenderer
-	transform: PrepareTransform
-	shapeParams: ShapeParams
-	id: string
-	layerName: string
-}
-```
-
-| Свойство      | Тип                | Описание                                               |
-| :------------ | :----------------- | :----------------------------------------------------- |
-| `draw`        | `ShapeRenderer`    | Функция, которая непосредственно рисует фигуру.        |
-| `transform`   | `PrepareTransform` | Функция, которая настраивает трансформации для фигуры. |
-| `shapeParams` | `ShapeParams`      | Метаданные фигуры (`zIndex`, `opacity`, `box`).        |
-| `id`          | `string`           | Уникальный ID фигуры, генерируемый React (`useId`).    |
-| `layerName`   | `string`           | Имя слоя, к которому принадлежит эта фигура.           |
-
----
-
-#### `LayerShapes`
-
-`Map`, который хранит все фигуры (`ShapeDrawingData`) на одном конкретном слое.
-
-```typescript
-export type LayerShapes = Map<string, ShapeDrawingData>
-```
-
--  **Ключ**: `string` - Уникальный ID фигуры.
--  **Значение**: `ShapeDrawingData` - Полные данные для отрисовки этой фигуры.
-
----
-
-### 3. Типы для трансформаций
-
-Эти типы используются для декларативного описания трансформаций в компоненте `<TransformGroup>`.
-
-#### `TransformType`
-
-Строковый литерал, определяющий тип трансформации.
-
-```typescript
-export type TransformType = 'translate' | 'scale' | 'rotation'
-```
-
----
-
-#### `TranslateParams`, `ScaleParams`, `RotationParams`
-
-Параметры для каждого типа трансформации.
-
-```typescript
-export type TranslateParams = { translateX: number; translateY: number }
-
-export type ScaleParams = {
-	scaleX: number
-	scaleY: number
-	originX?: number // Точка, относительно которой происходит масштабирование
-	originY?: number
-}
-
-export type RotationParams = {
-	angle: number // Угол в радианах
-	originX?: number // Точка, относительно которой происходит вращение
-	originY?: number
-}
-```
-
----
-
-#### `Transform`
-
-Размеченное объединение (discriminated union), которое представляет одну из возможных трансформаций. Свойство `type` используется для определения, какая именно трансформация применяется.
-
-```typescript
-export type Transform =
-	| ({ type: 'translate' } & TranslateParams)
-	| ({ type: 'scale' } & ScaleParams)
-	| ({ type: 'rotation' } & RotationParams)
-```
-
----
-
-### 4. Структуры данных для слоев и сцены
-
-Эти типы описывают состояние слоев и всей сцены в целом.
-
-#### `LayerRenderer`
-
-Тип для кастомной функции рендеринга, которая может быть передана в компонент `<Layer>`. Это позволяет полностью переопределить логику отрисовки для конкретного слоя.
-
-```typescript
-export type LayerRenderer = (layerData: {
-	shapes: LayerShapes
-	dirtyAreas: BoundingBox[]
-	opacity: number
-	ctx: CanvasRenderingContext2D
-	drawShapes: (
-		ctx: CanvasRenderingContext2D,
-		shapes: LayerShapes,
-		opacity: number
-	) => void
-}) => void
-```
-
--  **`layerData`**: Объект, содержащий всё необходимое для рендеринга слоя. Включает контекст (`ctx`), все фигуры слоя (`shapes`), массив "грязных областей" (`dirtyAreas`), общую прозрачность (`opacity`) и **вспомогательную функцию `drawShapes`**, которая позволяет вызвать стандартный рендерер библиотеки.
-
----
-
-#### `Layer`
-
-Интерфейс, представляющий полное состояние одного слоя внутри движка.
-
-```typescript
-export interface Layer {
-	canvas: HTMLCanvasElement
-	ctx: CanvasRenderingContext2D
-	opacity: number
-	shapes: LayerShapes
-	dirtyAreas: BoundingBox[]
-	renderer?: LayerRenderer
-}
-```
-
----
-
-#### `Layers`
-
-`Map`, который хранит все объекты слоев (`Layer`) во всей сцене.
-
-```typescript
-export type Layers = Map<string, Layer>
-```
-
--  **Ключ**: `string` - Уникальное имя слоя, заданное в пропсе `name` компонента `<Layer>`.
--  **Значение**: `Layer` - Объект, содержащий полное состояние слоя.
-
-## 🤝 Участие в разработке
-
-Мы всегда рады вашему вкладу! Если вы нашли ошибку или у вас есть идея для новой функции, пожалуйста, создайте [Issue](https://github.com/maxxam0n/canvasify-react/issues) или [Pull Request](https://github.com/maxxam0n/canvasify-react/pulls).
-
-## 📄 Лицензия
-
-Проект распространяется под лицензией [MIT](https://github.com/maxxam0n/canvasify-react/blob/main/LICENSE).
+| Prop          | Type     | Default      | Description                                    |
+| :------------ | :------- | :----------- | :--------------------------------------------- |
+| `x`           | `number` | `0`          | The x-coordinate of the top-left corner.       |
+| `y`           | `number` | `0`          | The y-coordinate of the top-left corner.       |
+| `width`       | `number` | **required** | The width of the rectangle.                    |
+| `height`      | `number` | **required** | The height of the rectangle.                   |
+| `fillColor`   | `string` | `undefined`  | The fill color (e.g., `"red"` or `"#FF0000"`). |
+| `strokeColor` | `string` | `undefined`  | The stroke color.                              |
+| `lineWidth`   | `number` | `1`          | The width of the stroke line.                  |
+| `opacity`     | `number` | `1`          | The individual opacity of the shape.           |
+| `zIndex`      | `number` | `0`          | The rendering order within the layer.          |
+
+\_Props for other shapes like `<CircleShape>` and `<TextShape>` follow a similar structure. For a complete list, please rely on your editor's autocompletion.
+
+## 🤝 Contributing
+
+Contributions are always welcome! If you find a bug or have an idea for a new feature, please create an [Issue](https://github.com/maxxam0n/canvasify-react/issues) or a [Pull Request](https://github.com/maxxam0n/canvasify-react/pulls).
+
+## 📄 License
+
+This project is licensed under the [MIT License](https://github.com/maxxam0n/canvasify-react/blob/main/LICENSE).
